@@ -1,6 +1,11 @@
 package com.dw3c.infocollecttool.service.impl;
 
+import com.dw3c.infocollecttool.entity.UploadFile;
+import com.dw3c.infocollecttool.mapper.IFileUploadMapper;
 import com.dw3c.infocollecttool.service.IFileUploadService;
+import com.dw3c.infocollecttool.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,15 +16,21 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class FileUploadServiceImpl implements IFileUploadService {
 
     // 定义文件存储路径
+    @Value("${upload.dir}")
     private static final String UPLOAD_DIR = "uploads/";
     // 允许上传的文件类型
+    @Value("${allowed.extensions}")
     private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("xlsx", "xls");
+
+    @Autowired
+    private IFileUploadMapper uploadFileMapper;
 
     @Override
     public String uploadFile(MultipartFile file) {
@@ -41,9 +52,11 @@ public class FileUploadServiceImpl implements IFileUploadService {
 
             // 按时间戳重命名文件
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-            String newFileName = timestamp + "." + fileExtension;
+            String newFileName = timestamp+"_"+Math.random()*1000 + "." + fileExtension;
             Path filePath = uploadPath.resolve(newFileName);
 
+            String updateDate = DateUtils.formatDateTime(DateUtils.dateToLocalDateTime(new Date()));
+            uploadFileMapper.insert(new UploadFile(null,newFileName,"system",updateDate,null));
             // 保存文件
             Files.copy(file.getInputStream(), filePath);
 
@@ -52,6 +65,31 @@ public class FileUploadServiceImpl implements IFileUploadService {
             e.printStackTrace();
             return "文件上传失败：" + e.getMessage();
         }
+    }
+
+    @Override
+    public void insert(UploadFile file) {
+        uploadFileMapper.insert(file);
+    }
+
+    @Override
+    public UploadFile getUploadFileById(String id) {
+        return null;
+    }
+
+    @Override
+    public List<UploadFile> getAllUploadFiles() {
+        return List.of();
+    }
+
+    @Override
+    public void updateUploadFile(UploadFile file) {
+
+    }
+
+    @Override
+    public void deleteUploadFile(Long id) {
+
     }
 
     private boolean isAllowedFileType(String fileExtension) {
