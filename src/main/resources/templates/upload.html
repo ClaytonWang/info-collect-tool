@@ -55,9 +55,7 @@
         xhr.upload.onprogress  = function (event) {
             if (event.lengthComputable)  {
                 const percentComplete = (event.loaded  / event.total)  * 100;
-                document.getElementById('progress').innerHTML =`${Math.round(percentComplete)}%`;
-                document.getElementById('uploadProgress').style.width  = `${Math.round(percentComplete)}%`;
-                document.getElementById('uploadProgress').innerText  = `${Math.round(percentComplete)}%`;
+                setProgress(Math.round(percentComplete));
             }
         };
 
@@ -66,11 +64,11 @@
             if (xhr.status  === 200 && xhr.response.indexOf('文件上传成功') !== -1) {
                 setTimeout(function () {
                     alert('文件上传成功！');
-                },  1000);
+                    setProgress(Math.round(0));
+                },  3000);
             } else {
+                setProgress(Math.round(0));
                 document.getElementById('progress').innerHTML =`<span style="color:red">文件上传失败!${xhr.response}</span>`;
-                document.getElementById('uploadProgress').style.width  = `0%`;
-                document.getElementById('uploadProgress').innerText  = `0%`;
                 setTimeout(function () {
                     alert('文件上传失败！');
                 },  1000);
@@ -83,6 +81,12 @@
         xhr.open('POST',  '/upload', true);
         xhr.send(formData);
     });
+
+    function setProgress(percent) {
+        document.getElementById('progress').innerHTML = `${percent}%`;
+        document.getElementById('uploadProgress').style.width  = `${percent}%`;
+        document.getElementById('uploadProgress').innerText  = `${percent}%`;
+    }
 </script>
 
 <script th:replace="~{common::common_script}"></script>

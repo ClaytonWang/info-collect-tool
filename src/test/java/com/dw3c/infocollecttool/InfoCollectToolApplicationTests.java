@@ -1,5 +1,6 @@
 package com.dw3c.infocollecttool;
 
+import com.dw3c.infocollecttool.entity.ScanLogs;
 import com.dw3c.infocollecttool.entity.UploadFile;
 import com.dw3c.infocollecttool.mapper.IFileUploadMapper;
 import com.dw3c.infocollecttool.service.IFileUploadService;
@@ -42,7 +43,12 @@ class InfoCollectToolApplicationTests {
 
     @Test
     void insertScanLog() {
-
+        var log = new ScanLogs();
+        log.setFileId(1);
+        log.setStatus("success");
+        log.setErrorMsg(null);
+        var id = scanLogsService.insert(log);
+        System.out.println(id);
     }
 
     @Test
