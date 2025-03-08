@@ -4,13 +4,15 @@ import lombok.Data;
 
 @Data
 public class InfoCollection {
-    Integer id;
-    String centralName;
-    String centralTeam;
-    String approveEmail;
-    String approvingDate;
-    String approvingConclusion;
-    String comments;
-    String updatedAt;
-    String createAt;
+    private Integer id;
+    private String fileId;
+    private String approverName;
+    private String team;
+    private String email;
+    private String approvingDate;
+    private String approvingConclusion;
+    private String additionalComments;
+    private String comments;
+    private String updatedAt;
+    private String createAt;
 }

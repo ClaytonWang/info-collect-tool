@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class UploadFile {
-    Integer id;
-    String fileName;
-    String email;
-    String updatedAt;
-    String createAt;
+    private Integer id;
+    private String fileName;
+    private String originalFileName;
+    private String updatedAt;
+    private String createAt;
 }

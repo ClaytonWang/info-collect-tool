@@ -20,14 +20,11 @@
             </div>
         </div>
         <br/>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <label for="fileInput" class="form-label">请选择文件，上传的文件只能是后缀名为.xlsx 的Excel文件，且大小不超过5M：</label>
-            <br/>
-            <input class="form-control" id="fileInput" name="fileInput" type="file">
-            <br/>
-            <button id="uploadBtn" type="button" class="btn btn-primary" disabled>上传</button>
-        </form>
-
+        <label for="fileInput" class="form-label">请选择文件，上传的文件只能是后缀名为.xlsx 的Excel文件，且大小不超过5M：</label>
+        <br/>
+        <input class="form-control" id="fileInput" name="fileInput" type="file" accept=".xlsx,.xls" required="required" />
+        <br/>
+        <button id="uploadBtn" type="button" class="btn btn-primary" disabled>上传</button>
     </div>
     <br/>
     <br/>
@@ -66,17 +63,21 @@
 
         // 上传完成后的处理
         xhr.onload  = function () {
-            if (xhr.status  === 200) {
+            if (xhr.status  === 200 && xhr.response.indexOf('文件上传成功') !== -1) {
                 setTimeout(function () {
                     alert('文件上传成功！');
-
                 },  1000);
             } else {
+                document.getElementById('progress').innerHTML =`<span style="color:red">文件上传失败!${xhr.response}</span>`;
+                document.getElementById('uploadProgress').style.width  = `0%`;
+                document.getElementById('uploadProgress').innerText  = `0%`;
                 setTimeout(function () {
                     alert('文件上传失败！');
                 },  1000);
+                console.error(xhr.response);
             }
             document.getElementById('uploadBtn').disabled  = true;
+            document.getElementById("fileInput").value="";
         };
 
         xhr.open('POST',  '/upload', true);

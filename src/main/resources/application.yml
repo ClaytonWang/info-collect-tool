@@ -17,10 +17,10 @@ spring:
     init:
       mode: always
 
-
-
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
 
 springdoc:
   swagger-ui:
@@ -28,12 +28,11 @@ springdoc:
   api-docs:
     path: /v3/api-docs
 
-upload:
-  dir: uploads/
-
-allowed:
-  extensions:
-    - xlsx
-    - xls
+app:
+  upload:
+    dir: uploads/
+    allowed-extensions:
+      - xlsx
+      - xls
 
 

@@ -5,8 +5,8 @@
 <mapper namespace="com.dw3c.infocollecttool.mapper.IFileUploadMapper">
 
     <insert id="insert" parameterType="com.dw3c.infocollecttool.entity.UploadFile" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO file_uploads(file_name, email,updated_at)
-            VALUES(#{fileName}, #{email},
+        INSERT INTO file_uploads(file_name, original_file_name,updated_at)
+            VALUES(#{fileName}, #{originalFileName},
                     <choose>
                         <when test="updatedAt != null">
                             #{updatedAt}

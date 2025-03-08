@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dw3c.infocollecttool.mapper.IScanLogs">
+
+    <insert id="insert"></insert>
+    <update id="update"></update>
+    <delete id="delete"></delete>
+    <select id="getById" resultType="com.dw3c.infocollecttool.entity.ScanLogs"></select>
+    <select id="getAll" resultType="com.dw3c.infocollecttool.entity.ScanLogs"></select>
+</mapper>

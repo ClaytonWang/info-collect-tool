@@ -3,7 +3,6 @@ package com.dw3c.infocollecttool.service.impl;
 import com.dw3c.infocollecttool.entity.UploadFile;
 import com.dw3c.infocollecttool.mapper.IFileUploadMapper;
 import com.dw3c.infocollecttool.service.IFileUploadService;
-import com.dw3c.infocollecttool.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,19 +14,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class FileUploadServiceImpl implements IFileUploadService {
 
     // 定义文件存储路径
-    @Value("${upload.dir}")
-    private static final String UPLOAD_DIR = "uploads/";
+    @Value("${app.upload.dir:uploads/}")
+    private String UPLOAD_DIR;
     // 允许上传的文件类型
-    @Value("${allowed.extensions}")
-    private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("xlsx", "xls");
+    @Value("${app.allowed-extensions:xlsx,xls}")
+    private  List<String> ALLOWED_EXTENSIONS;
 
     @Autowired
     private IFileUploadMapper uploadFileMapper;
@@ -55,8 +52,8 @@ public class FileUploadServiceImpl implements IFileUploadService {
             String newFileName = timestamp+"_"+Math.random()*1000 + "." + fileExtension;
             Path filePath = uploadPath.resolve(newFileName);
 
-            String updateDate = DateUtils.formatDateTime(DateUtils.dateToLocalDateTime(new Date()));
-//            uploadFileMapper.insert(new UploadFile(null,newFileName,"system",updateDate,null));
+//            String updateDate = DateUtils.formatDateTime(DateUtils.dateToLocalDateTime(new Date()));
+            uploadFileMapper.insert(new UploadFile(null,newFileName,originalFilename+"."+fileExtension,null,null));
             // 保存文件
             Files.copy(file.getInputStream(), filePath);
 

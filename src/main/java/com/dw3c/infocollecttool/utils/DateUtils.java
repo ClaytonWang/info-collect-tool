@@ -24,6 +24,11 @@ public class DateUtils {
         return dateTime.format(DEFAULT_FORMATTER);
     }
 
+    public static String formatDateTime(LocalDateTime dateTime,String formart) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formart);
+        return dateTime.format(formatter);
+    }
+
     /**
      * String转LocalDateTime
      *
