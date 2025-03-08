@@ -56,7 +56,7 @@ public class FileUploadServiceImpl implements IFileUploadService {
             Path filePath = uploadPath.resolve(newFileName);
 
             String updateDate = DateUtils.formatDateTime(DateUtils.dateToLocalDateTime(new Date()));
-            uploadFileMapper.insert(new UploadFile(null,newFileName,"system",updateDate,null));
+//            uploadFileMapper.insert(new UploadFile(null,newFileName,"system",updateDate,null));
             // 保存文件
             Files.copy(file.getInputStream(), filePath);
 

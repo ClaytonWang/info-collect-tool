@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>上传文件</title>
+    <link th:replace="~{common::common_css}"/>
+</head>
+<body>
+<div id="app">
+    <div th:replace="~{common::common_header}"></div>
+
+    <div class="container">
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">上传进度：<i id="progress"></i></h5>
+                <div class="progress" role="progressbar" >
+                    <div id="uploadProgress" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0">0%</div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="fileInput" class="form-label">请选择文件，上传的文件只能是后缀名为.xlsx 的Excel文件，且大小不超过5M：</label>
+            <br/>
+            <input class="form-control" id="fileInput" name="fileInput" type="file">
+            <br/>
+            <button id="uploadBtn" type="button" class="btn btn-primary" disabled>上传</button>
+        </form>
+
+    </div>
+    <br/>
+    <br/>
+    <div th:replace="~{common::common_footer}"></div>
+</div>
+
+<script>
+
+    document.getElementById('fileInput').addEventListener('change',  function() {
+        if (this.files  && this.files.length  > 0) {
+            document.getElementById('uploadBtn').disabled  = false;
+        } else {
+            document.getElementById('uploadBtn').disabled  = true;
+        }
+    });
+
+    document.getElementById('uploadBtn').addEventListener('click',  function() {
+        const fileInput = document.getElementById('fileInput');
+        const formData = new FormData();
+        if(fileInput.files.length  ===  0){
+            alert('请选择文件！')
+            return;
+        }
+        formData.append('file',  fileInput.files[0]);
+
+        const xhr = new XMLHttpRequest();
+        // 监听上传进度事件
+        xhr.upload.onprogress  = function (event) {
+            if (event.lengthComputable)  {
+                const percentComplete = (event.loaded  / event.total)  * 100;
+                document.getElementById('progress').innerHTML =`${Math.round(percentComplete)}%`;
+                document.getElementById('uploadProgress').style.width  = `${Math.round(percentComplete)}%`;
+                document.getElementById('uploadProgress').innerText  = `${Math.round(percentComplete)}%`;
+            }
+        };
+
+        // 上传完成后的处理
+        xhr.onload  = function () {
+            if (xhr.status  === 200) {
+                setTimeout(function () {
+                    alert('文件上传成功！');
+
+                },  1000);
+            } else {
+                setTimeout(function () {
+                    alert('文件上传失败！');
+                },  1000);
+            }
+            document.getElementById('uploadBtn').disabled  = true;
+        };
+
+        xhr.open('POST',  '/upload', true);
+        xhr.send(formData);
+    });
+</script>
+
+<script th:replace="~{common::common_script}"></script>
+</body>
+</html>
