@@ -6,8 +6,7 @@ import lombok.Data;
 public class ScanLogs {
     private Integer id;
     private Integer fileId;
-    private String status;
-    private String errorMsg;
+    private String logMsg;
     private String updatedAt;
     private String createAt;
 }

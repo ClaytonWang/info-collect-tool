@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.FileInputStream;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 class InfoCollectToolApplicationTests {
@@ -30,23 +31,28 @@ class InfoCollectToolApplicationTests {
     @Test
     void contextLoads() {
         String updateDate = DateUtils.formatDateTime(DateUtils.dateToLocalDateTime(new Date()));
-        fileUploadService.insert(new UploadFile(null, "test.txt", "test.txt", updateDate,null));
+//        fileUploadService.insert(new UploadFile(null, "test.txt", "test.txt", updateDate,null));
     }
 
     @Test
     void readExcel() {
-        var obg = ExcelReaderUtils.populateInfoFromExcel("uploads/20250308143703_154.98171777670078.xlsx");
-        obg.setFileId(1);
-        var id= infoCollectionService.insert(obg);
-        System.out.println(obg);
+        List<UploadFile> rawFiles = fileUploadService.getRawFiles();
+        for (UploadFile file : rawFiles) {
+            String filePath = "uploads/" + file.getFileName();
+            try {
+                var obg = ExcelReaderUtils.populateInfoFromExcel(filePath);
+                obg.setFileId(file.getId());
+                var id= infoCollectionService.insert(obg);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Test
     void insertScanLog() {
         var log = new ScanLogs();
         log.setFileId(1);
-        log.setStatus("success");
-        log.setErrorMsg(null);
         var id = scanLogsService.insert(log);
         System.out.println(id);
     }

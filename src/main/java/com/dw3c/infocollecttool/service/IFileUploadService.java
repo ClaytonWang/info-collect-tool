@@ -10,6 +10,7 @@ public interface  IFileUploadService {
     Integer insert(UploadFile file);
     UploadFile getUploadFileById(Integer id);
     List<UploadFile> getAllUploadFiles();
+    List<UploadFile> getRawFiles();
     void updateUploadFile(UploadFile file);
     void deleteUploadFile(Integer id);
 }

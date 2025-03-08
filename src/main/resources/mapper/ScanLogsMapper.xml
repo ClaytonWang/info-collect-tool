@@ -5,15 +5,13 @@
     <insert id="insert" parameterType="com.dw3c.infocollecttool.entity.ScanLogs" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO scan_logs(
             file_id,
-            status,
-            error_msg)
+            log_msg)
         VALUES(#{fileId},
-               #{status},
-               #{errorMsg})
+               #{logMsg})
     </insert>
 
     <update id="update" parameterType="com.dw3c.infocollecttool.entity.ScanLogs">
-        UPDATE scan_logs SET updated_at = #{updatedAt}, status = #{status}, error_msg = #{errorMsg} WHERE id = #{id}
+        UPDATE scan_logs SET updated_at = #{updatedAt}, log_msg = #{logMsg} WHERE id = #{id}
     </update>
 
     <delete id="delete" parameterType="Integer">

@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS file_uploads
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     file_name TEXT NULL,
     original_file_name TEXT NULL,
+    status TEXT NULL DEFAULT 'UPLOADED',
     updated_at TIMESTAMP DEFAULT (datetime('now', 'localtime')),
     create_at TIMESTAMP DEFAULT (datetime('now', 'localtime'))
 );
@@ -27,8 +28,7 @@ CREATE TABLE IF NOT EXISTS scan_logs
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     file_id INTEGER NOT NULL,
-    status TEXT NULL,
-    error_msg TEXT NULL,
+    log_msg TEXT NULL,
     updated_at TEXT TIMESTAMP DEFAULT (datetime('now', 'localtime')),
     create_at TEXT TIMESTAMP DEFAULT (datetime('now', 'localtime')),
     FOREIGN KEY (file_id) REFERENCES file_uploads(id)

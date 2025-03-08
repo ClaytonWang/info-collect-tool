@@ -53,7 +53,7 @@ public class FileUploadServiceImpl implements IFileUploadService {
             Path filePath = uploadPath.resolve(newFileName);
 
 //            String updateDate = DateUtils.formatDateTime(DateUtils.dateToLocalDateTime(new Date()));
-            uploadFileMapper.insert(new UploadFile(null,newFileName,originalFilename+"."+fileExtension,null,null));
+            uploadFileMapper.insert(new UploadFile(null,newFileName,originalFilename+"."+fileExtension,"UPLOADED",null,null));
             // 保存文件
             Files.copy(file.getInputStream(), filePath);
 
@@ -77,6 +77,11 @@ public class FileUploadServiceImpl implements IFileUploadService {
     @Override
     public List<UploadFile> getAllUploadFiles() {
         return uploadFileMapper.getAllUploadFiles();
+    }
+
+    @Override
+    public List<UploadFile> getRawFiles() {
+        return uploadFileMapper.getRawFiles();
     }
 
     @Override

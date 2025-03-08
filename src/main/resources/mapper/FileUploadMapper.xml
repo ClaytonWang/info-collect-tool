@@ -4,33 +4,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dw3c.infocollecttool.mapper.IFileUploadMapper">
 
-    <insert id="insert" parameterType="com.dw3c.infocollecttool.entity.UploadFile" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO file_uploads(file_name, original_file_name,updated_at)
-            VALUES(#{fileName}, #{originalFileName},
-                    <choose>
-                        <when test="updatedAt != null">
-                            #{updatedAt}
-                        </when>
-                        <otherwise>
-                            CURRENT_TIMESTAMP
-                        </otherwise>
-                    </choose>)
+    <insert id="insert" parameterType="com.dw3c.infocollecttool.entity.UploadFile" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO file_uploads(file_name, original_file_name)
+        VALUES (#{fileName}, #{originalFileName})
     </insert>
 
     <select id="getUploadFileById" parameterType="Integer" resultType="com.dw3c.infocollecttool.entity.UploadFile">
-        SELECT * FROM file_uploads WHERE id = #{id}
+        SELECT *
+        FROM file_uploads
+        WHERE id = #{id}
     </select>
 
     <select id="getAllUploadFiles" resultType="com.dw3c.infocollecttool.entity.UploadFile">
-        SELECT * FROM file_uploads
+        SELECT *
+        FROM file_uploads
+    </select>
+    <select id="getRawFiles" resultType="com.dw3c.infocollecttool.entity.UploadFile">
+        SELECT *
+        from file_uploads fu
+        WHERE fu.status = "UPLOADED"
     </select>
 
     <update id="updateUploadFile" parameterType="com.dw3c.infocollecttool.entity.UploadFile">
-        UPDATE file_uploads SET updated_at = #{updatedAt} WHERE id = #{id}
+        UPDATE file_uploads
+        SET updated_at = #{updatedAt},
+            status     = #{status}
+        WHERE id = #{id}
     </update>
 
     <delete id="deleteUploadFile" parameterType="Integer">
-        DELETE FROM file_uploads WHERE id = #{id}
+        DELETE
+        FROM file_uploads
+        WHERE id = #{id}
     </delete>
 
 </mapper>
