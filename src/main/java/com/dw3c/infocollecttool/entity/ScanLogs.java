@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ScanLogs {
     private Integer id;
-    private String fileId;
+    private Integer fileId;
     private String status;
     private String errorMsg;
     private String updatedAt;

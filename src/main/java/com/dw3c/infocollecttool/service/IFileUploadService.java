@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface  IFileUploadService {
     String uploadFile(MultipartFile file);
-    void insert(UploadFile file);
-    UploadFile getUploadFileById(String id);
+    Integer insert(UploadFile file);
+    UploadFile getUploadFileById(Integer id);
     List<UploadFile> getAllUploadFiles();
     void updateUploadFile(UploadFile file);
-    void deleteUploadFile(Long id);
+    void deleteUploadFile(Integer id);
 }

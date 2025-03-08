@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class InfoCollection {
     private Integer id;
-    private String fileId;
+    private Integer fileId;
     private String approverName;
     private String team;
     private String email;

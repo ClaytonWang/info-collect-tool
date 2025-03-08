@@ -65,28 +65,28 @@ public class FileUploadServiceImpl implements IFileUploadService {
     }
 
     @Override
-    public void insert(UploadFile file) {
-        uploadFileMapper.insert(file);
+    public Integer insert(UploadFile file) {
+        return uploadFileMapper.insert(file);
     }
 
     @Override
-    public UploadFile getUploadFileById(String id) {
-        return null;
+    public UploadFile getUploadFileById(Integer id) {
+        return uploadFileMapper.getUploadFileById(id);
     }
 
     @Override
     public List<UploadFile> getAllUploadFiles() {
-        return List.of();
+        return uploadFileMapper.getAllUploadFiles();
     }
 
     @Override
     public void updateUploadFile(UploadFile file) {
-
+        uploadFileMapper.updateUploadFile(file);
     }
 
     @Override
-    public void deleteUploadFile(Long id) {
-
+    public void deleteUploadFile(Integer id) {
+        uploadFileMapper.deleteUploadFile(id);
     }
 
     private boolean isAllowedFileType(String fileExtension) {

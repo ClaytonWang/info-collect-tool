@@ -6,13 +6,13 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface IInfoCollection {
+public interface IInfoCollectionMapper {
 
-    void insert(@Param("info") InfoCollection info);
-    InfoCollection getById(@Param("id") String id);
+    Integer insert(InfoCollection info);
+    InfoCollection getById(Integer id);
     List<InfoCollection> getAll();
-    void update(@Param("log") InfoCollection info);
-    void delete(@Param("id") Long id);
+    void update(InfoCollection info);
+    void delete(Integer id);
 }
 
 

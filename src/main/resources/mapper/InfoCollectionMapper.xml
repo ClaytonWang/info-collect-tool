@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dw3c.infocollecttool.mapper.IInfoCollectionMapper">
+
+    <insert id="insert" parameterType="com.dw3c.infocollecttool.entity.InfoCollection" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO info_collection(
+             file_id,
+             email,
+             approver_name,
+             team,
+             approving_date,
+             approving_conclusion,
+             additional_comments,
+             comments)
+        VALUES(#{fileId},
+               #{email},
+               #{approverName},
+               #{team},
+               #{approvingDate},
+               #{approvingConclusion},
+               #{additionalComments},
+               #{comments})
+    </insert>
+
+    <update id="update" parameterType="com.dw3c.infocollecttool.entity.InfoCollection">
+        UPDATE info_collection SET updated_at = #{updatedAt} WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM info_collection WHERE id = #{id}
+    </delete>
+
+    <select id="getById" parameterType="Integer" resultType="com.dw3c.infocollecttool.entity.InfoCollection">
+        SELECT * FROM info_collection WHERE id = #{id}
+    </select>
+
+    <select id="getAll" resultType="com.dw3c.infocollecttool.entity.InfoCollection">
+        SELECT * FROM info_collection
+    </select>
+</mapper>

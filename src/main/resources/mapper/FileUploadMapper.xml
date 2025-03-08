@@ -17,7 +17,7 @@
                     </choose>)
     </insert>
 
-    <select id="getUploadFileById" parameterType="Long" resultType="com.dw3c.infocollecttool.entity.UploadFile">
+    <select id="getUploadFileById" parameterType="Integer" resultType="com.dw3c.infocollecttool.entity.UploadFile">
         SELECT * FROM file_uploads WHERE id = #{id}
     </select>
 
@@ -29,7 +29,7 @@
         UPDATE file_uploads SET updated_at = #{updatedAt} WHERE id = #{id}
     </update>
 
-    <delete id="deleteUploadFile" parameterType="Long">
+    <delete id="deleteUploadFile" parameterType="Integer">
         DELETE FROM file_uploads WHERE id = #{id}
     </delete>
 

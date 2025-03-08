@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dw3c.infocollecttool.mapper.IScanLogsMapper">
+
+    <insert id="insert" parameterType="com.dw3c.infocollecttool.entity.ScanLogs" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO scan_logs(
+            file_id,
+            status,
+            error_msg)
+        VALUES(#{fileId},
+               #{status},
+               #{errorMsg})
+    </insert>
+
+    <update id="update" parameterType="com.dw3c.infocollecttool.entity.ScanLogs">
+        UPDATE scan_logs SET updated_at = #{updatedAt}, status = #{status}, error_msg = #{errorMsg} WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM scan_logs WHERE id = #{id}
+    </delete>
+
+    <select id="getById" parameterType="Integer" resultType="com.dw3c.infocollecttool.entity.ScanLogs">
+        SELECT * FROM scan_logs WHERE id = #{id}
+    </select>
+
+    <select id="getAll" resultType="com.dw3c.infocollecttool.entity.ScanLogs">
+        SELECT * FROM scan_logs
+    </select>
+
+</mapper>

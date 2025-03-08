@@ -6,10 +6,10 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface IScanLogs {
-    void insert(@Param("log") ScanLogs log);
-    ScanLogs getById(@Param("id") String id);
+public interface IScanLogsMapper {
+    Integer insert(ScanLogs log);
+    ScanLogs getById(Integer id);
     List<ScanLogs> getAll();
-    void update(@Param("log") ScanLogs log);
-    void delete(@Param("id") Long id);
+    void update(ScanLogs log);
+    void delete(Integer id);
 }
