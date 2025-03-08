@@ -25,7 +25,49 @@ public class ExcelReaderUtils {
             "Additional Comments (if any)"
     ));
 
-    public static InfoCollection readExcel(String filePath) {
+    private static final String COMMENTS = "Comments (If any)";
+
+    private static void setInfoValues(InfoCollection info,String name,String value) {
+        switch (name) {
+            case "EM Name":
+            case "DE Name":
+            case "Central Name":
+                info.setApproverName(value);
+                break;
+
+            case "EM Team":
+            case "DE Team":
+            case "Central Team":
+                info.setTeam(value);
+                break;
+
+            case "EM Email":
+            case "DE Email":
+            case "Approver Email":
+                info.setEmail(value);
+                break;
+
+            case "Approving Date":
+                info.setApprovingDate(value);
+                break;
+
+            case "Approving Conclusion":
+                info.setApprovingConclusion(value);
+                break;
+
+            case "Additional Comments (if any)":
+                info.setAdditionalComments(value);
+                break;
+
+            case COMMENTS:
+                info.setComments(value);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static InfoCollection populateInfoFromExcel(String filePath) {
         int commentsCellNum = -1;
         var infoCollection = new InfoCollection();
         try (FileInputStream file = new FileInputStream(filePath)) {
@@ -40,11 +82,11 @@ public class ExcelReaderUtils {
                     Cell cell3 = row.getCell(commentsCellNum);
                     if (cell3 != null) {
                         String comments = readCellValue(cell3);
-                        infoCollection.setComments(comments);
+                        setInfoValues(infoCollection, COMMENTS, comments);
                         commentsCellNum = -1;
                         System.out.println("Comments (If any):" + comments);
                     } else {
-                        infoCollection.setComments("");
+                        setInfoValues(infoCollection, COMMENTS, "");
                         System.out.println("Comments (If any): No corresponding value");
                     }
                 }
@@ -53,15 +95,18 @@ public class ExcelReaderUtils {
                 for (var i = 1; i <= row.getLastCellNum(); i++) {
                     Cell cell1 = row.getCell(i); // 获取单元格
                     if (cell1 != null) {
-                        String strValue = readCellValue(cell1);
-                        if (CHECK_STRINGS.contains(strValue)) {
+                        String strName = readCellValue(cell1);
+                        if (CHECK_STRINGS.contains(strName)) {
                             Cell cell2 = row.getCell(i + 1);
                             if (cell2 != null) {
+                                String strValue = readCellValue(cell2);
+                                setInfoValues(infoCollection, strName, strValue);
                                 System.out.println(strValue + ":" + readCellValue(cell2));
                             } else {
-                                System.out.println(strValue + ": No corresponding value");
+                                setInfoValues(infoCollection, strName, "");
+                                System.out.println(strName + ": No corresponding value");
                             }
-                        }else if(strValue.equalsIgnoreCase("Comments (If any)")){
+                        }else if(strName.equalsIgnoreCase(COMMENTS)){
                             commentsCellNum=i;
                         }
                     }
@@ -71,10 +116,11 @@ public class ExcelReaderUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return infoCollection;
     }
 
-    public static String readCellValue(Cell cell) {
+    private static String readCellValue(Cell cell) {
         try {
             switch (cell.getCellType()) {
                 case STRING:

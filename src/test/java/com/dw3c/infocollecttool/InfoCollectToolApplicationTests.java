@@ -25,7 +25,8 @@ class InfoCollectToolApplicationTests {
 
     @Test
     void readExcel() {
-        ExcelReaderUtils.readExcel("uploads/20250308143703_154.98171777670078.xlsx");
+        var obg = ExcelReaderUtils.populateInfoFromExcel("uploads/20250308143703_154.98171777670078.xlsx");
+        System.out.println(obg);
     }
 
 }
