@@ -91,12 +91,16 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
                 var fileId = file.getId();
                 scanLog.setId(fileId);
 
+                // 读取数据，处理数据，写入数据库等
                 var infoCollection = ExcelReaderUtils.populateInfoFromExcel(filePath);
                 infoCollection.setFileId(fileId);
                 infoCollectionService.insert(infoCollection);
 
+                //记录日志信息
                 scanLog.setLogMsg("SUCCESS");
                 scanLogsService.insert(scanLog);
+
+                // todo：修改上传文件状态
 
             } catch (Exception e) {
                 String logMsg = " 执行executeTask失败: " + filePath+"--->"+e.getMessage();
