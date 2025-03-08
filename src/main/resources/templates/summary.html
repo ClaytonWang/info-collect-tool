@@ -9,36 +9,36 @@
 <div id="app">
     <div th:replace="~{common::common_header}"></div>
 
-    <table class="table table-striped table-hover">
-        <thead>
+    <table class="table table-striped table-hover table-bordered caption-top">
+        <caption>
+            <h4>List of each excel file's summary:</h4>
+        </caption>
+        <thead class="table-light">
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col" style="width: 10px;">NO.</th>
+            <th scope="col" style="width: 10%;">Name</th>
+            <th scope="col" style="width: 10%;">Team</th>
+            <th scope="col" style="width: 10%;">Email</th>
+            <th scope="col" style="width: 10%;">Approving<br>Date</th>
+            <th scope="col" style="width: 10%;">Approving<br>Conclusion</th>
+            <th scope="col">Additional<br>Comments<br>(if any)</th>
+            <th scope="col">Comments<br>(if any)</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
+        <tr th:each="item,iterStat : ${list}">
+            <td><a th:href="@{/download/{fileId}(fileId=${item.getFileId()})}" target="_blank">[[${iterStat.count}]]</a></td>
+            <td th:text="${item.getApproverName()}"></td>
+            <td th:text="${item.getEmail()}"></td>
+            <td th:text="${item.getTeam()}"></td>
+            <td th:text="${item.getApprovingDate()}"></td>
+            <td th:text="${item.getApprovingConclusion()}"></td>
+            <td th:text="${item.getAdditionalComments()}"></td>
+            <td th:text="${item.getComments()}"></td>
         </tr>
         </tbody>
     </table>
-
+    <div class="lead" style="float: right;">Total number of excel files: <mark>[[${list.size()}]]</mark></div>
     <div th:replace="~{common::common_footer}"></div>
 </div>
 
