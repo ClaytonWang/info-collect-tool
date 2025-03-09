@@ -54,11 +54,7 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
      */
     @Override
     public void run(String... args) throws Exception {
-        // 启动时创建上传目录
-        Path uploadsDir = Paths.get("uploads").toAbsolutePath().normalize();
-        if (!Files.exists(uploadsDir))  {
-            Files.createDirectories(uploadsDir);
-        }
+
         // 启动调度
         if(schedulerEnabled) {
             startScheduler();

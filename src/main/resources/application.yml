@@ -9,7 +9,7 @@ spring:
       max-request-size: 10MB
 
   datasource:
-    url: jdbc:sqlite:info-collect.db
+    url: jdbc:sqlite:db/info-collect.db
     driver-class-name: org.sqlite.JDBC
     username: ""
     password: ""
@@ -44,9 +44,5 @@ app:
     # 定时任务执行间隔 60秒
     duration: 60
   upload:
-    dir: uploads/
-    allowed-extensions:
-      - xlsx
-      - xls
-
+    allowed-extensions: xlsx,xls
 

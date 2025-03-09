@@ -23,7 +23,7 @@ public class FileUploadServiceImpl implements IFileUploadService {
     @Value("${app.upload.dir:uploads/}")
     private String UPLOAD_DIR;
     // 允许上传的文件类型
-    @Value("${app.allowed-extensions:xlsx,xls}")
+    @Value("${app.upload.allowed-extensions:xlsx,xls}")
     private  List<String> ALLOWED_EXTENSIONS;
 
     @Autowired
