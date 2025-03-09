@@ -18,10 +18,16 @@ public class ExcelReaderUtils {
     // 将需要检查的字符串提取到一个集合中
     private static final Set<String> CHECK_STRINGS = new HashSet<>(Arrays.asList(
             "EM Name",
+            "DE Name",
+            "Central Name",
             "Approving Date",
             "EM Team",
+            "DE Team",
+            "Central Team",
             "Approving Conclusion",
             "EM Email",
+            "DE Email",
+            "Approver Email",
             "Additional Comments (if any)"
     ));
 
@@ -81,7 +87,7 @@ public class ExcelReaderUtils {
                 if(commentsCellNum!=-1){
                     Cell cell3 = row.getCell(commentsCellNum);
                     if (cell3 != null) {
-                        String comments = readCellValue(cell3);
+                                                           String comments = readCellValue(cell3);
                         setInfoValues(infoCollection, COMMENTS, comments);
                         commentsCellNum = -1;
                         System.out.println("Comments (If any):" + comments);

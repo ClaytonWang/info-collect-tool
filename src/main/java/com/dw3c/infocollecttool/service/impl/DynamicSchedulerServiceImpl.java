@@ -56,7 +56,8 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
     public void run(String... args) throws Exception {
 
         // 启动调度
-        if(schedulerEnabled) {
+        if (!"true".equals(System.getProperty("debug.mode")) && !schedulerEnabled)  {
+            // 这个方法在非调试模式下执行
             startScheduler();
         }
     }
@@ -72,8 +73,10 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
                     Duration.ofSeconds(schedulerDuration)  // 执行间隔
             );
             System.out.println(" 调度已启动");
+            log.info(" 调度已启动");
         } else {
             System.out.println(" 调度已在运行中");
+            log.info(" 调度已在运行中");
         }
     }
 
@@ -84,9 +87,11 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
     public void stopScheduler() {
         if (scheduledFuture != null && !scheduledFuture.isCancelled())  {
             scheduledFuture.cancel(false);  // 取消任务,且不中断正在执行的任务
+            System.out.println(" 调度已停止");
             log.info(" 调度已停止");
         } else {
             log.info(" 调度未运行");
+            System.out.println(" 调度未运行");
         }
     }
 
@@ -95,6 +100,7 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
      */
     private void executeTask() {
         System.out.println(" 任务执行时间: " + new java.util.Date());
+        log.info(" 任务执行时间: " + new java.util.Date());
         // 任务逻辑 扫描上传的文件，读取数据，处理数据，写入数据库等
 
         List<UploadFile> rawFiles = fileUploadService.getRawFiles();
