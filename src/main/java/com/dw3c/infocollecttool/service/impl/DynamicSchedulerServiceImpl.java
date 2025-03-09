@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +44,12 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
      */
     @Override
     public void run(String... args) throws Exception {
+        // 启动时创建上传目录
+        Path uploadsDir = Paths.get("uploads").toAbsolutePath().normalize();
+        if (!Files.exists(uploadsDir))  {
+            Files.createDirectories(uploadsDir);
+        }
+
 //        startScheduler();
     }
 

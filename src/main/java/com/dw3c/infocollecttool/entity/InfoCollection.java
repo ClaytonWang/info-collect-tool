@@ -6,6 +6,7 @@ import lombok.Data;
 public class InfoCollection {
     private Integer id;
     private Integer fileId;
+    private UploadFile file;
     private String approverName;
     private String team;
     private String email;

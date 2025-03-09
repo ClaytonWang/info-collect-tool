@@ -30,11 +30,29 @@
         DELETE FROM info_collection WHERE id = #{id}
     </delete>
 
-    <select id="getById" parameterType="Integer" resultType="com.dw3c.infocollecttool.entity.InfoCollection">
-        SELECT * FROM info_collection WHERE id = #{id}
+    <resultMap id="InfoCollectionMap" type="com.dw3c.infocollecttool.entity.InfoCollection">
+        <id property="id" column="id"/>
+        <result property="fileId" column="file_id"/>
+        <result property="email" column="email"/>
+        <result property="approverName" column="approver_name"/>
+        <result property="team" column="team"/>
+        <result property="approvingDate" column="approving_date"/>
+        <result property="approvingConclusion" column="approving_conclusion"/>
+        <result property="additionalComments" column="additional_comments"/>
+        <result property="comments" column="comments"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="createAt" column="create_at"/>
+        <association property="file" javaType="com.dw3c.infocollecttool.entity.UploadFile">
+            <id property="id" column="id"/>
+            <result property="fileName" column="file_name"/>
+        </association>
+    </resultMap>
+
+    <select id="getById" parameterType="Integer" resultMap="InfoCollectionMap">
+        SELECT * FROM info_collection ic inner join file_uploads fu on ic.file_id = fu.id where ic.id=#{id}
     </select>
 
-    <select id="getAll" resultType="com.dw3c.infocollecttool.entity.InfoCollection">
-        SELECT * FROM info_collection
+    <select id="getAll" resultMap="InfoCollectionMap">
+        SELECT * FROM info_collection ic inner join file_uploads fu on ic.file_id = fu.id
     </select>
 </mapper>
