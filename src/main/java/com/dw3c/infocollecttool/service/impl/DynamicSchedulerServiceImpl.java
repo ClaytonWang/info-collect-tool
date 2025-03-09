@@ -56,7 +56,7 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
     public void run(String... args) throws Exception {
 
         // 启动调度
-        if (!"true".equals(System.getProperty("debug.mode")) && !schedulerEnabled)  {
+        if (!"true".equals(System.getProperty("debug.mode")) && schedulerEnabled)  {
             // 这个方法在非调试模式下执行
             startScheduler();
         }
