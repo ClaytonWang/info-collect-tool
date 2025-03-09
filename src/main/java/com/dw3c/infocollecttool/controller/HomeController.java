@@ -71,4 +71,13 @@ public class HomeController {
         }
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        try {
+            infoCollectionService.delete(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "index";
+    }
 }
