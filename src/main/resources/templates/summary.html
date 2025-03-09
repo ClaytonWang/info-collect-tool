@@ -24,6 +24,7 @@
                 <th scope="col" style="width: 10%;">Approving<br>Conclusion</th>
                 <th scope="col">Additional<br>Comments<br>(if any)</th>
                 <th scope="col">Comments<br>(if any)</th>
+                <th scope="col">Update Time</th>
             </tr>
             </thead>
             <tbody>
@@ -38,6 +39,7 @@
                 <td th:text="${item.getApprovingConclusion()}"></td>
                 <td th:text="${item.getAdditionalComments()}"></td>
                 <td th:text="${item.getComments()}"></td>
+                <td th:text="${item.getUpdatedAt()}"></td>
             </tr>
             </tbody>
         </table>
