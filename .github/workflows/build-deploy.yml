@@ -49,24 +49,25 @@ jobs:
 #          key: ${{ secrets.SSHKEY }}
           port: ${{ secrets.PORT }}
           script: |
-            docker pull claydocker/info-collect-tool:main
-            
             # 容器名称或 ID 
             CONTAINER_NAME_OR_ID="info-collect-tool"
 
             # 镜像名称 
-            IMAGE_NAME="claydocker/info-collect-tool:latest"
-
-            # 检查容器是否在运行 
-            if docker ps | grep -q $CONTAINER_NAME_OR_ID; then 
-              echo "容器正在运行，停止并删除容器..."
-              docker stop $CONTAINER_NAME_OR_ID 
-              docker rm $CONTAINER_NAME_OR_ID 
-            else 
-              echo "容器未运行，启动一个新的容器..."
-              docker run -d -p 8080:8080 --name $CONTAINER_NAME_OR_ID $IMAGE_NAME \
-                -v /info-collect-tool/logs:/app/logs \
-                -v /info-collect-tool/uploads:/app/uploads \
-                -v /info-collect-tool/db:/app/db \
-                claydocker/info-collect-tool:latest
+            IMAGE_NAME="claydocker/info-collect-tool:main"
+            
+            docker pull $IMAGE_NAME
+            
+            # 检查容器是否存在（包括运行中和已停止的容器）
+            if docker ps -a | grep -q $CONTAINER_NAME_OR_ID; then
+              echo "容器存在，删除容器..."
+              # 强制停止并删除容器 
+              docker rm -f $CONTAINER_NAME_OR_ID
             fi
+            
+            # 启动一个新的容器 
+            echo "启动一个新的容器..."
+            docker run -d -p 8080:8080 --name $CONTAINER_NAME_OR_ID \
+            -v /info-collect-tool/logs:/app/logs \
+            -v /info-collect-tool/uploads:/app/uploads \
+            -v /info-collect-tool/db:/app/db \
+            $IMAGE_NAME
