@@ -65,7 +65,7 @@
                 setTimeout(function () {
                     alert('文件上传成功！');
                     setProgress(Math.round(0));
-                },  2000);
+                },  1500);
             } else {
                 setProgress(Math.round(0));
                 document.getElementById('progress').innerHTML =`<span style="color:red">文件上传失败!${xhr.response}</span>`;

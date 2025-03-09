@@ -42,7 +42,7 @@ app:
   scheduler:
     enabled: true
     # 定时任务执行间隔 60秒
-    duration: 10
+    duration: 60
   upload:
     dir: uploads/
     allowed-extensions:

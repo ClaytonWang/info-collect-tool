@@ -112,7 +112,6 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
             try {
 
                 var fileId = file.getId();
-                scanLog.setFileId(fileId);
 
                 // 读取数据，处理数据，写入数据库等
                 var infoCollection = ExcelReaderUtils.populateInfoFromExcel(filePath);
@@ -122,6 +121,7 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
 
                 //记录日志信息
                 scanLog.setLogMsg("SUCCESS");
+                scanLog.setFileId(fileId);
                 scanLogsService.insert(scanLog);
 
                 // 修改上传文件状态
