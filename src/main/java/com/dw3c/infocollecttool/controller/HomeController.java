@@ -1,5 +1,6 @@
 package com.dw3c.infocollecttool.controller;
 
+import com.dw3c.infocollecttool.service.IFileUploadService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +28,9 @@ public class HomeController {
 
     @Autowired
     private IInfoCollectionService infoCollectionService;
+
+    @Autowired
+    private IFileUploadService fileUploadService;
 
     @GetMapping("/")
     public String index() {
@@ -71,10 +75,11 @@ public class HomeController {
         }
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    @GetMapping("/delete/{id}/{fileId}")
+    public String delete(@PathVariable Integer id,@PathVariable Integer fileId) {
         try {
             infoCollectionService.delete(id);
+            fileUploadService.deleteUploadFile(fileId);
         } catch (Exception e) {
             e.printStackTrace();
         }

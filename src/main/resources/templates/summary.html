@@ -26,8 +26,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item,iterStat : ${list}">
-            <td th:attr="data-id=${item.id}">
+        <tr th:each="item,iterStat : ${list}" th:attr="data-fileid=${item.getFileId()}">
+            <td th:attr="data-id=${item.id}" >
                 <a th:href="@{/download/{fileName}(fileName=${item.getFile().getFileName()})}" target="_blank">[[${iterStat.count}]]</a>
             </td>
             <td th:text="${item.getApproverName()}"></td>
