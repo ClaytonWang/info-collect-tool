@@ -39,6 +39,10 @@ springdoc:
     path: /v3/api-docs
 
 app:
+  scheduler:
+    enabled: true
+    # 定时任务执行间隔 60秒
+    duration: 10
   upload:
     dir: uploads/
     allowed-extensions:

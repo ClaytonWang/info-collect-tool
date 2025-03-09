@@ -6,9 +6,12 @@ import com.dw3c.infocollecttool.service.IDynamicSchedulerService;
 import com.dw3c.infocollecttool.service.IFileUploadService;
 import com.dw3c.infocollecttool.service.IInfoCollectionService;
 import com.dw3c.infocollecttool.service.IScanLogsService;
+import com.dw3c.infocollecttool.utils.DateUtils;
 import com.dw3c.infocollecttool.utils.ExcelReaderUtils;
+import com.dw3c.infocollecttool.utils.Status;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
@@ -37,6 +41,12 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
     @Autowired
     private IScanLogsService scanLogsService;
 
+    @Value("${app.scheduler.enabled:false}")
+    private boolean schedulerEnabled;
+
+    @Value("${app.scheduler.duration:60}")
+    private int schedulerDuration;
+
     private ScheduledFuture<?> scheduledFuture;
 
     /**
@@ -49,8 +59,10 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
         if (!Files.exists(uploadsDir))  {
             Files.createDirectories(uploadsDir);
         }
-
-//        startScheduler();
+        // 启动调度
+        if(schedulerEnabled) {
+            startScheduler();
+        }
     }
 
     /**
@@ -61,7 +73,7 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
         if (scheduledFuture == null || scheduledFuture.isCancelled())  {
             scheduledFuture = Objects.requireNonNull(taskScheduler).scheduleAtFixedRate(
                     this::executeTask, // 任务逻辑
-                    Duration.ofSeconds(10)  // 执行间隔
+                    Duration.ofSeconds(schedulerDuration)  // 执行间隔
             );
             System.out.println(" 调度已启动");
         } else {
@@ -91,26 +103,34 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
 
         List<UploadFile> rawFiles = fileUploadService.getRawFiles();
         var scanLog = new ScanLogs();
+        String updateDate = DateUtils.formatDateTime(DateUtils.dateToLocalDateTime(new Date()));
+        scanLog.setUpdatedAt(updateDate);
+
         for (UploadFile file : rawFiles) {
             String filePath = "uploads/" + file.getFileName();
 
             try {
 
                 var fileId = file.getId();
-                scanLog.setId(fileId);
+                scanLog.setFileId(fileId);
 
                 // 读取数据，处理数据，写入数据库等
                 var infoCollection = ExcelReaderUtils.populateInfoFromExcel(filePath);
                 infoCollection.setFileId(fileId);
+                infoCollection.setUpdatedAt(updateDate);
                 infoCollectionService.insert(infoCollection);
 
                 //记录日志信息
                 scanLog.setLogMsg("SUCCESS");
                 scanLogsService.insert(scanLog);
 
-                // todo：修改上传文件状态
+                // 修改上传文件状态
+                file.setStatus("PROCESSED");
+                file.setUpdatedAt(updateDate);
+                fileUploadService.updateUploadFile(file);
 
             } catch (Exception e) {
+                //失败时记录日志信息
                 String logMsg = " 执行executeTask失败: " + filePath+"--->"+e.getMessage();
                 log.error(logMsg);
                 scanLog.setLogMsg(logMsg);
