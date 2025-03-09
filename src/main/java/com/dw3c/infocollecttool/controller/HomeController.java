@@ -1,6 +1,7 @@
 package com.dw3c.infocollecttool.controller;
 
 import com.dw3c.infocollecttool.service.IFileUploadService;
+import com.dw3c.infocollecttool.service.IScanLogsService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +32,9 @@ public class HomeController {
 
     @Autowired
     private IFileUploadService fileUploadService;
+
+    @Autowired
+    private IScanLogsService scanLogsService;;
 
     @GetMapping("/")
     public String index() {
@@ -80,8 +84,10 @@ public class HomeController {
         try {
             infoCollectionService.delete(id);
             fileUploadService.deleteUploadFile(fileId);
+            scanLogsService.delete(fileId);
         } catch (Exception e) {
             e.printStackTrace();
+            return "error";
         }
         return "index";
     }

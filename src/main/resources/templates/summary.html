@@ -6,41 +6,46 @@
     <link th:replace="~{common::common_css}"/>
 </head>
 <body>
-<div id="app" style="padding: 0 5px;">
+<div id="app">
     <div th:replace="~{common::common_header}"></div>
 
-    <table class="table table-striped table-hover table-bordered caption-top">
-        <caption>
-            <h4>List of each Excel file's summary:</h4>
-        </caption>
-        <thead class="table-light">
-        <tr>
-            <th scope="col" style="width: 10px;">NO.</th>
-            <th scope="col" style="width: 10%;">Name</th>
-            <th scope="col" style="width: 10%;">Team</th>
-            <th scope="col" style="width: 10%;">Email</th>
-            <th scope="col" style="width: 10%;">Approving<br>Date</th>
-            <th scope="col" style="width: 10%;">Approving<br>Conclusion</th>
-            <th scope="col">Additional<br>Comments<br>(if any)</th>
-            <th scope="col">Comments<br>(if any)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item,iterStat : ${list}" th:attr="data-fileid=${item.getFileId()}">
-            <td th:attr="data-id=${item.id}" >
-                <a th:href="@{/download/{fileName}(fileName=${item.getFile().getFileName()})}" target="_blank">[[${iterStat.count}]]</a>
-            </td>
-            <td th:text="${item.getApproverName()}"></td>
-            <td th:text="${item.getEmail()}"></td>
-            <td th:text="${item.getTeam()}"></td>
-            <td th:text="${item.getApprovingDate()}"></td>
-            <td th:text="${item.getApprovingConclusion()}"></td>
-            <td th:text="${item.getAdditionalComments()}"></td>
-            <td th:text="${item.getComments()}"></td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="lead" style="float: right;">Total number of excel files: <mark>[[${list.size()}]]</mark></div>
+    <div style="padding: 0 5px;">
+        <table class="table table-striped table-hover table-bordered caption-top">
+            <caption>
+                <h4>List of each Excel file's summary:</h4>
+            </caption>
+            <thead class="table-light">
+            <tr>
+                <th scope="col" style="width: 10px;">NO.</th>
+                <th scope="col" style="width: 10%;">Name</th>
+                <th scope="col" style="width: 10%;">Team</th>
+                <th scope="col" style="width: 10%;">Email</th>
+                <th scope="col" style="width: 10%;">Approving<br>Date</th>
+                <th scope="col" style="width: 10%;">Approving<br>Conclusion</th>
+                <th scope="col">Additional<br>Comments<br>(if any)</th>
+                <th scope="col">Comments<br>(if any)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item,iterStat : ${list}" th:attr="data-fileid=${item.getFileId()}">
+                <td th:attr="data-id=${item.id}" title="Download Excel file">
+                    <a th:href="@{/download/{fileName}(fileName=${item.getFile().getFileName()})}" target="_blank">[[${iterStat.count}]]</a>
+                </td>
+                <td th:text="${item.getApproverName()}"></td>
+                <td th:text="${item.getEmail()}"></td>
+                <td th:text="${item.getTeam()}"></td>
+                <td th:text="${item.getApprovingDate()}"></td>
+                <td th:text="${item.getApprovingConclusion()}"></td>
+                <td th:text="${item.getAdditionalComments()}"></td>
+                <td th:text="${item.getComments()}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="lead" style="float: right;">Total number of excel files:
+            <mark>[[${list.size()}]]</mark>
+        </div>
+    </div>
+
     <div th:replace="~{common::common_footer}"></div>
 </div>
 

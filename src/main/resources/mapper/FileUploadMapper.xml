@@ -34,9 +34,7 @@
     </update>
 
     <delete id="deleteUploadFile" parameterType="Integer">
-        DELETE
-        FROM file_uploads
-        WHERE id = #{id}
+        DELETE FROM file_uploads WHERE id = #{id};
     </delete>
 
 </mapper>
