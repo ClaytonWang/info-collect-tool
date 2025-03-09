@@ -50,7 +50,23 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             docker pull claydocker/info-collect-tool:main
-            docker run -d -p 8080:8080 --name info-collect-tool \
-              -v /info-collect-tool/logs:/app/logs \
-              -v /info-collect-tool/uploads:/app/uploads \
-              claydocker/info-collect-tool:latest
+            
+            # 容器名称或 ID 
+            CONTAINER_NAME_OR_ID="info-collect-tool"
+
+            # 镜像名称 
+            IMAGE_NAME="claydocker/info-collect-tool:latest"
+
+            # 检查容器是否在运行 
+            if docker ps | grep -q $CONTAINER_NAME_OR_ID; then 
+              echo "容器正在运行，停止并删除容器..."
+              docker stop $CONTAINER_NAME_OR_ID 
+              docker rm $CONTAINER_NAME_OR_ID 
+            else 
+              echo "容器未运行，启动一个新的容器..."
+              docker run -d -p 8080:8080 --name $CONTAINER_NAME_OR_ID $IMAGE_NAME \
+                -v /info-collect-tool/logs:/app/logs \
+                -v /info-collect-tool/uploads:/app/uploads \
+                -v /info-collect-tool/db:/app/db \
+                claydocker/info-collect-tool:latest
+            fi
