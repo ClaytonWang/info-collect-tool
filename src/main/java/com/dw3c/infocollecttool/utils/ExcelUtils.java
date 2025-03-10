@@ -21,15 +21,23 @@ public class ExcelUtils {
     private static final Set<String> CHECK_STRINGS = new HashSet<>(Arrays.asList(
             "EM Name",
             "DE Name",
+            "CP Name",
             "Central Name",
+
             "Approving Date",
+
             "EM Team",
             "DE Team",
+            "CP Team",
             "Central Team",
+
             "Approving Conclusion",
+
             "EM Email",
             "DE Email",
+            "CP Email",
             "Approver Email",
+
             "Additional Comments (if any)"
     ));
 
@@ -178,6 +186,11 @@ public class ExcelUtils {
                 info.setApproverName(value);
                 break;
 
+            case "CP Name":
+                info.setInfoType("CP");
+                info.setApproverName(value);
+                break;
+
             case "Central Name":
                 info.setInfoType("Central");
                 info.setApproverName(value);
@@ -185,12 +198,14 @@ public class ExcelUtils {
 
             case "EM Team":
             case "DE Team":
+            case "CP Team":
             case "Central Team":
                 info.setTeam(value);
                 break;
 
             case "EM Email":
             case "DE Email":
+            case "CP Email":
             case "Approver Email":
                 info.setEmail(value);
                 break;
