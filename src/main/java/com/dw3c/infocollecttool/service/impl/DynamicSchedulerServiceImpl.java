@@ -7,8 +7,7 @@ import com.dw3c.infocollecttool.service.IFileUploadService;
 import com.dw3c.infocollecttool.service.IInfoCollectionService;
 import com.dw3c.infocollecttool.service.IScanLogsService;
 import com.dw3c.infocollecttool.utils.DateUtils;
-import com.dw3c.infocollecttool.utils.ExcelReaderUtils;
-import com.dw3c.infocollecttool.utils.Status;
+import com.dw3c.infocollecttool.utils.ExcelUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,9 +15,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
@@ -116,7 +112,7 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
                 var fileId = file.getId();
 
                 // 读取数据，处理数据，写入数据库等
-                var infoCollection = ExcelReaderUtils.populateInfoFromExcel(filePath);
+                var infoCollection = ExcelUtils.populateInfoFromExcel(filePath);
                 infoCollection.setFileId(fileId);
                 infoCollection.setUpdatedAt(updateDate);
                 infoCollectionService.insert(infoCollection);

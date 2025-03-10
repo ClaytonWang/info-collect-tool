@@ -17,6 +17,7 @@
             <thead class="table-light">
             <tr>
                 <th scope="col" style="width: 10px;">NO.</th>
+                <th scope="col" style="width: 10px;">Type</th>
                 <th scope="col" style="width: 8%;">Name</th>
                 <th scope="col" style="width: 10%;">Team</th>
                 <th scope="col" style="width: 10%;">Email</th>
@@ -30,8 +31,9 @@
             <tbody>
             <tr th:each="item,iterStat : ${list}" th:attr="data-fileid=${item.getFileId()}">
                 <td th:attr="data-id=${item.id}" title="Download Excel file">
-                    <a th:href="@{/download/{fileName}(fileName=${item.getFile().getFileName()})}" target="_blank">[[${iterStat.count}]]</a>
+                    <a th:href="@{/download/{fileId}(fileId=${item.getFileId()})}" target="_blank">[[${iterStat.count}]]</a>
                 </td>
+                <td th:text="${item.getInfoType()}"></td>
                 <td th:text="${item.getApproverName()}"></td>
                 <td th:text="${item.getEmail()}"></td>
                 <td th:text="${item.getTeam()}"></td>
@@ -43,8 +45,14 @@
             </tr>
             </tbody>
         </table>
-        <div class="lead" style="float: right;">Total number of excel files:
-            <mark>[[${list.size()}]]</mark>
+        <div style="display: flex;justify-content: space-between;align-content: center;">
+            <div class="lead" >
+                Total number of excel files:
+                <mark>[[${list.size()}]]</mark>
+            </div>
+            <div class="lead" >
+                <a th:href="@{/download/all}" target="_blank">Download</a>
+            </div>
         </div>
     </div>
 

@@ -7,6 +7,7 @@ public class InfoCollection {
     private Integer id;
     private Integer fileId;
     private UploadFile file;
+    private String infoType;
     private String approverName;
     private String team;
     private String email;

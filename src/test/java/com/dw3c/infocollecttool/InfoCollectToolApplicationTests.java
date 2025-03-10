@@ -1,18 +1,18 @@
 package com.dw3c.infocollecttool;
 
+import com.dw3c.infocollecttool.entity.InfoCollection;
 import com.dw3c.infocollecttool.entity.ScanLogs;
 import com.dw3c.infocollecttool.entity.UploadFile;
-import com.dw3c.infocollecttool.mapper.IFileUploadMapper;
 import com.dw3c.infocollecttool.service.IFileUploadService;
 import com.dw3c.infocollecttool.service.IInfoCollectionService;
 import com.dw3c.infocollecttool.service.IScanLogsService;
 import com.dw3c.infocollecttool.utils.DateUtils;
-import com.dw3c.infocollecttool.utils.ExcelReaderUtils;
+import com.dw3c.infocollecttool.utils.ExcelUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
 
-import java.io.FileInputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +40,7 @@ class InfoCollectToolApplicationTests {
         for (UploadFile file : rawFiles) {
             String filePath = "uploads/" + file.getFileName();
             try {
-                var obg = ExcelReaderUtils.populateInfoFromExcel(filePath);
+                var obg = ExcelUtils.populateInfoFromExcel(filePath);
                 obg.setFileId(file.getId());
                 var id= infoCollectionService.insert(obg);
             } catch (Exception e) {
@@ -62,4 +62,9 @@ class InfoCollectToolApplicationTests {
 
     }
 
+    @Test
+    void exportSummaryExcelTest() {
+        List<InfoCollection> list = infoCollectionService.getAll();
+        Resource resource = ExcelUtils.saveSummaryToExcel(list);
+    }
 }

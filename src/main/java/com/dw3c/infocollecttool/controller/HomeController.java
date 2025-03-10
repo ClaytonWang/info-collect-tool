@@ -1,7 +1,9 @@
 package com.dw3c.infocollecttool.controller;
 
+import com.dw3c.infocollecttool.entity.UploadFile;
 import com.dw3c.infocollecttool.service.IFileUploadService;
 import com.dw3c.infocollecttool.service.IScanLogsService;
+import com.dw3c.infocollecttool.utils.ExcelUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -58,11 +60,16 @@ public class HomeController {
         return "upload";
     }
 
-    @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<Resource> download(@PathVariable String fileName) {
-        Path fileStorageLocation = Paths.get(filePath).toAbsolutePath().normalize();
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<Resource> download(@PathVariable Integer fileId) {
+
         try {
+            UploadFile file = fileUploadService.getUploadFileById(fileId);
+
+            Path fileStorageLocation = Paths.get(filePath).toAbsolutePath().normalize();
             // 加载文件
+            String fileName = file.getFileName();
+            String fileOriginalName = file.getOriginalFileName();
             Path filePath = fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
 
@@ -71,7 +78,7 @@ public class HomeController {
                 // 设置 HTTP 头
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
-                headers.setContentDispositionFormData("attachment",  fileName);
+                headers.setContentDispositionFormData("attachment",  fileOriginalName);
 
                 return ResponseEntity.ok()
                         .headers(headers)
@@ -82,6 +89,25 @@ public class HomeController {
         } catch (MalformedURLException e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @GetMapping("/download/all")
+    public ResponseEntity<Resource> downloadAll() {
+        String fileName = "summary.xlsx";
+        List<InfoCollection> list = infoCollectionService.getAll();
+        Resource resource = ExcelUtils.saveSummaryToExcel(list);
+        // 检查文件是否存在
+        if (resource != null && (resource.exists() || resource.isReadable())) {
+            // 设置 HTTP 头
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+            headers.setContentDispositionFormData("attachment", fileName);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
+        }
+        return ResponseEntity.internalServerError().build();
     }
 
     @GetMapping("/delete/{id}/{fileId}")

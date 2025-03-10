@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS info_collection
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     file_id INTEGER NOT NULL,
+    info_type TEXT NULL,
     email TEXT NULL,
     approver_name TEXT NULL,
     team TEXT NULL,

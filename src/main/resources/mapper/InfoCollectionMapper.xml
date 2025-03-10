@@ -5,6 +5,7 @@
     <insert id="insert" parameterType="com.dw3c.infocollecttool.entity.InfoCollection" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO info_collection(
              file_id,
+             info_type,
              email,
              approver_name,
              team,
@@ -13,6 +14,7 @@
              additional_comments,
              comments)
         VALUES(#{fileId},
+               #{infoType},
                #{email},
                #{approverName},
                #{team},
@@ -33,6 +35,7 @@
     <resultMap id="InfoCollectionMap" type="com.dw3c.infocollecttool.entity.InfoCollection">
         <id property="id" column="id"/>
         <result property="fileId" column="file_id"/>
+        <result property="infoType" column="info_type"/>
         <result property="email" column="email"/>
         <result property="approverName" column="approver_name"/>
         <result property="team" column="team"/>
@@ -45,6 +48,7 @@
         <association property="file" javaType="com.dw3c.infocollecttool.entity.UploadFile">
             <id property="id" column="id"/>
             <result property="fileName" column="file_name"/>
+            <result property="originalFileName" column="original_file_name"/>
         </association>
     </resultMap>
 
@@ -54,5 +58,6 @@
 
     <select id="getAll" resultMap="InfoCollectionMap">
         SELECT * FROM info_collection ic inner join file_uploads fu on ic.file_id = fu.id
+                 ORDER BY ic.info_type,ic.create_at ASC
     </select>
 </mapper>
