@@ -2,6 +2,7 @@ package com.dw3c.infocollecttool.controller;
 
 import com.dw3c.infocollecttool.service.IFileUploadService;
 import com.dw3c.infocollecttool.service.IScanLogsService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +37,9 @@ public class HomeController {
     @Autowired
     private IScanLogsService scanLogsService;;
 
+    @Autowired
+    private HttpServletRequest request;
+
     @GetMapping("/")
     public String index() {
         return "index";
@@ -44,6 +48,7 @@ public class HomeController {
     @GetMapping("/summary")
     public String info(Model model) {
         List<InfoCollection> list = infoCollectionService.getAll();
+        model.addAttribute("contextPath",  request.getServletPath());
         model.addAttribute("list", list);
         return "summary";
     }
