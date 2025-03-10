@@ -50,6 +50,12 @@ public class ExcelUtils {
                     Cell cell3 = row.getCell(commentsCellNum);
                     if (cell3 != null) {
                         String comments = readCellValue(cell3);
+                        if (comments != null &&
+                                (comments.trim().contains("(pls fill in your")
+                                        || comments.trim().contains("(please fill in your")
+                                )) {
+                            comments = "";
+                        }
                         setInfoValues(infoCollection, COMMENTS, comments);
                         commentsCellNum = -1;
                         log.info("Comments (If any):{}", comments);
@@ -70,9 +76,8 @@ public class ExcelUtils {
                             if (cell2 != null) {
                                 String strValue = readCellValue(cell2);
                                 if (strValue != null &&
-                                        (strValue.trim().equalsIgnoreCase("(pls fill in your comments here if any)")
-                                                || strValue.trim().equalsIgnoreCase("(please fill in your name here)")
-                                                || strValue.trim().equalsIgnoreCase("((please fill in your CG email here))")
+                                        (strValue.trim().contains("(pls fill in your")
+                                                || strValue.trim().contains("(please fill in your")
                                         )) {
                                     strValue = "";
                                 }
