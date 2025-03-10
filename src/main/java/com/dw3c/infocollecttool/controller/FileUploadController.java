@@ -1,6 +1,7 @@
 package com.dw3c.infocollecttool.controller;
 
 import com.dw3c.infocollecttool.service.IFileUploadService;
+import com.dw3c.infocollecttool.service.impl.DynamicSchedulerServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,6 +21,9 @@ public class FileUploadController {
     @Autowired
     private IFileUploadService fileUploadService;
 
+    @Autowired
+    private DynamicSchedulerServiceImpl dynamicSchedulerService;
+
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "上传Excel文件", description = "上传一个文件，并按时间戳重命名")
     public String handleFileUpload(@Parameter(
@@ -35,7 +39,13 @@ public class FileUploadController {
             return "文件为空，请选择文件上传。";
         }
 
-        return fileUploadService.uploadFile(file);
+        var rst =  fileUploadService.uploadFile(file);
+
+        if(rst.contains("文件上传成功")){
+            dynamicSchedulerService.startScheduler();
+        }
+        return rst;
+
     }
 
 }

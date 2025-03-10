@@ -41,8 +41,8 @@ springdoc:
 app:
   scheduler:
     enabled: true
-    # 定时任务执行间隔 180秒
-    duration: 180
+    # 定时任务执行间隔 30秒
+    duration: 30
   upload:
     allowed-extensions: xlsx,xls
 

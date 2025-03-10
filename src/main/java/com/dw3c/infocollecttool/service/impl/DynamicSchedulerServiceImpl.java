@@ -58,6 +58,8 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
         }
     }
 
+    private Integer executeTaskCount = 0;
+
     /**
      * 启动调度
      */
@@ -100,6 +102,17 @@ public class DynamicSchedulerServiceImpl implements IDynamicSchedulerService, Co
         // 任务逻辑 扫描上传的文件，读取数据，处理数据，写入数据库等
 
         List<UploadFile> rawFiles = fileUploadService.getRawFiles();
+        if(rawFiles.isEmpty()){
+            log.info(" 未发现待处理文件");
+            System.out.println(" 未发现待处理文件");
+            if(executeTaskCount > 10){
+                stopScheduler();
+            }
+            executeTaskCount++;
+            return;
+        }
+        executeTaskCount=0;
+        
         var scanLog = new ScanLogs();
         String updateDate = DateUtils.formatDateTime(DateUtils.dateToLocalDateTime(new Date()));
         scanLog.setUpdatedAt(updateDate);
