@@ -32,7 +32,7 @@
                 <th scope="col" style="width: 80px;">Type</th>
                 <th scope="col" style="width: 10%;">Name</th>
                 <th scope="col" style="width: 15%;">Email</th>
-                <th scope="col" style="width: 120px;">Team</th>
+                <th scope="col" style="width: 150px;">Team</th>
                 <th scope="col" style="width: 10%;">Approving<br>Date</th>
                 <th scope="col" style="width: 10%;">Approving<br>Conclusion</th>
                 <th scope="col">Additional<br>Comments<br>(if any)</th>
@@ -48,7 +48,7 @@
                 <td th:text="${item.getInfoType()}"></td>
                 <td th:text="${item.getApproverName()}"></td>
                 <td th:text="${item.getEmail()}"></td>
-                <td th:text="${item.getTeam()}"></td>
+                <td th:text="${item.getTeam()}" th:attr="data-bs-title=${item.getTeam()}" data-bs-toggle="tooltip" ></td>
                 <td th:text="${item.getApprovingDate()}"></td>
                 <td th:text="${item.getApprovingConclusion()}"></td>
                 <td th:text="${item.getAdditionalComments()}" th:attr="data-bs-title=${item.getAdditionalComments()}" data-bs-toggle="tooltip" ></td>
