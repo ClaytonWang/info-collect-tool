@@ -35,7 +35,7 @@ public class FileUploadServiceImpl implements IFileUploadService {
         // 获取文件后缀名
         String originalFilename = file.getOriginalFilename();
         String fileExtension = originalFilename != null ? originalFilename.substring(originalFilename.lastIndexOf(".") + 1) : "";
-        String oldFileName = originalFilename != null ? originalFilename.substring(0, originalFilename.lastIndexOf(".")) +System.currentTimeMillis()+ "." + fileExtension : "";
+        String newFileName = originalFilename != null ? originalFilename.substring(0, originalFilename.lastIndexOf(".")) +System.currentTimeMillis()+ "." + fileExtension : "";
         // 检查文件类型
         if (!isAllowedFileType(fileExtension)) {
             return "文件类型不支持，仅允许上传 .xlsx 格式的Excel文件。";
@@ -48,12 +48,9 @@ public class FileUploadServiceImpl implements IFileUploadService {
                 Files.createDirectories(uploadPath);
             }
 
-            // 按时间戳重命名文件
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-            String newFileName = timestamp+"_"+System.currentTimeMillis() + "." + fileExtension;
             Path filePath = uploadPath.resolve(newFileName);
 
-            uploadFileMapper.insert(new UploadFile(null,newFileName,oldFileName,"UPLOADED",null,null));
+            uploadFileMapper.insert(new UploadFile(null,newFileName,originalFilename,"UPLOADED",null,null));
             // 保存文件
             Files.copy(file.getInputStream(), filePath);
 
