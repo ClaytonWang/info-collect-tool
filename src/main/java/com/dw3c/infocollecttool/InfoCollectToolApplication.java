@@ -31,6 +31,8 @@ class StartupInitializer implements ApplicationContextInitializer<ConfigurableAp
 
     private static final String dbPath="db/";
 
+    private static final String zipPath="zip_folder/";
+
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
 
@@ -49,6 +51,16 @@ class StartupInitializer implements ApplicationContextInitializer<ConfigurableAp
         if (!Files.exists(dbDir))  {
             try {
                 Files.createDirectories(dbDir);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        // 启动时创建zip目录
+        Path zipDir = Paths.get(zipPath).toAbsolutePath().normalize();
+        if (!Files.exists(zipDir))  {
+            try {
+                Files.createDirectories(zipDir);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

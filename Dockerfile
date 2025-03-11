@@ -14,6 +14,8 @@ RUN mkdir -p /app/uploads/
 
 RUN mkdir -p /app/db/
 
+RUN mkdir -p /app/zip_folder
+
 WORKDIR /app
 
 COPY --from=builder /app/target/info-collect-tool-0.0.1-SNAPSHOT.jar  app.jar

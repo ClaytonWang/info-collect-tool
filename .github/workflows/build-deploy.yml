@@ -70,4 +70,5 @@ jobs:
             -v /info-collect-tool/logs:/app/logs \
             -v /info-collect-tool/uploads:/app/uploads \
             -v /info-collect-tool/db:/app/db \
+            -v /info-collect-tool/db:/app/zip_folder \
             $IMAGE_NAME
